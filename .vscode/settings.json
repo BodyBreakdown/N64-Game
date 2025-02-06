@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "stdint.h": "c",
+        "libdragon.h": "c",
+        "stdio.h": "c",
+        "t3d.h": "c",
+        "game_time.h": "c",
+        "t3dmodel.h": "c",
+        "cstdlib": "c"
+    }
+}
