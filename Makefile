@@ -19,7 +19,7 @@ assets_conv = $(addprefix filesystem/,$(notdir $(assets_png:%.png=%.sprite))) \
 			  $(addprefix filesystem/,$(notdir $(assets_glb:%.glb=%.t3dm)))
 
 MKSPRITE_FLAGS ?=
-MKFONT_FLAGS ?= --range all
+MKFONT_FLAGS ?= --range 0-255 --monochrome
 
 filesystem/%.sprite: assets/textures/%.png
 	@mkdir -p $(dir $@)
@@ -46,13 +46,14 @@ filesystem/%.t3dm: assets/%.glb
 	$(T3D_GLTF_TO_3D) "$<" $@
 	$(N64_BINDIR)/mkasset -c 2 -o filesystem $@
 
-CFLAGS += -I$(INCLUDE_DIR) 
+CFLAGS += -I$(INCLUDE_DIR) -I$(N64_INST)/include
 CFLAGS += -O3
 
 all: hey.z64
 .PHONY: all
 
-OBJS = $(BUILD_DIR)/main.o
+SRC_FILES := $(wildcard $(SOURCE_DIR)/*.c)
+OBJS := $(patsubst $(SOURCE_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRC_FILES)) #$(BUILD_DIR)/main.o
 
 $(BUILD_DIR)/hey.dfs: $(assets_conv) 
 $(BUILD_DIR)/hey.elf: $(OBJS)

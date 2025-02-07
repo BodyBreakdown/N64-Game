@@ -6,6 +6,11 @@
         "t3d.h": "c",
         "game_time.h": "c",
         "t3dmodel.h": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "game_math.h": "c",
+        "game_model.h": "c",
+        "object3d.h": "c",
+        "cmath": "c",
+        "gl.h": "c"
     }
 }

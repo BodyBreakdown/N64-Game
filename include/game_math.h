@@ -1,7 +1,9 @@
 #ifndef GAME_MATH_H
 #define GAME_MATH_H
+
+#include <fmath.h>
 #include <stdint.h>
-#include <math.h>
+
 
 #define i8 int8_t
 #define u8 uint8_t
@@ -12,43 +14,28 @@
 #define i64 int64_t
 #define u64 uint64_t
 
-typedef struct
+#define Vec3Zero    {0, 0, 0}
+#define Vec3One     {1, 1, 1}
+#define Vec3UnitX   {1, 0, 0}
+#define Vec3UnitY   {0, 1, 0}
+#define Vec3UnitZ   {0, 0, 1}
+
+typedef union
 {
-    float x, y;
+    struct
+    {
+        float x, y;
+    };  
+    float v[2];
 } Vec2;
 
-static inline i8 i8_sign(i8 x)
-{
-    return (x >> 7) | (!!x);
-}
 
-static inline i8 i8_bit_clamp(i8 x, i8 min, i8 max)
-{
-    i8 belowMin = (x - min) >> 7;
-    i8 aboveMax = (max - x) >> 7;
-    return (aboveMax & max) | (~aboveMax & ((belowMin & min) | (~belowMin & x)));
-}
 
-static inline Vec2 vec2_sqr(Vec2 vec)
-{
-    return (Vec2){vec.x * vec.x, vec.y * vec.y};
-}
+i8 i8_sign(i8 x);
+i8 i8_bit_clamp(i8 x, i8 min, i8 max);
 
-static inline Vec2 vec2_multiply(Vec2 vec1, Vec2 vec2)
-{
-    return (Vec2) {vec1.x * vec2.x, vec1.y * vec2.y};
-}
-
-static inline Vec2 vec2_normalize(Vec2 vec)
-{
-    float length = sqrtf(vec.x * vec.x + vec.y * vec.y);
-    if(length > 0)
-    {
-        float invLen = 1 /length;
-        vec.y *= invLen;
-        vec.x *= invLen;
-    }
-    return vec;
-}
+Vec2 vec2_sqr(Vec2 v);
+Vec2 vec2_multiply(Vec2 v1, Vec2 v2);
+Vec2 vec2_normalize(Vec2 v);
 
 #endif
