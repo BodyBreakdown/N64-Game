@@ -1,0 +1,94 @@
+       
+    T3DModel* model = t3d_model_load("rom:/rat.t3dm");
+    T3DMat4 modelMat;
+    t3d_mat4_identity(&modelMat);
+    T3DMat4FP* modelMatFP = malloc_uncached(sizeof(T3DMat4FP));
+    
+    T3DModel* sky = t3d_model_load("rom:/sky.t3dm");
+    T3DMat4 skyMat;
+    t3d_mat4_identity(&skyMat);
+    T3DMat4FP* skyMatFP = malloc_uncached(sizeof(T3DMat4FP));
+       
+       
+       
+        if(joypad_is_connected((joypad_port_t)0))
+        {
+            inputs = joypad_get_inputs((joypad_port_t)0);
+            inputAxes.x = abs(inputs.stick_x) > 5 ? i8_bit_clamp(inputs.stick_x, -75, 75) : 0;
+            inputAxes.y = abs(inputs.stick_y) > 5 ? i8_bit_clamp(inputs.stick_y, -75, 75) : 0;
+
+            inputAxes = vec2_normalize(inputAxes);
+            
+            if (inputs.cstick_x != 0)
+            {
+                rotAngle -= deltaTime * i8_sign(inputs.cstick_x);
+            }
+            if (inputs.analog_l > 0)
+            {
+                camPos.y -= deltaTime * 10;
+            }
+            if (inputs.analog_r > 0)
+            {
+                camPos.y += deltaTime * 10;
+            }
+
+            float sin;
+            float cos;
+            fm_sincosf(rotAngle, &sin, &cos);
+            T3DVec3 forward = {{sin, 0, cos}};
+            T3DVec3 right = {{-cos, 0, sin}};
+
+            camPos.x += ((right.x * inputAxes.x) + (forward.x * inputAxes.y)) * deltaTime * 10;
+            camPos.z += ((right.z * inputAxes.x) + (forward.z * inputAxes.y)) * deltaTime * 10;
+            
+            camTarget.x = forward.x + camPos.x;
+            camTarget.y = camPos.y;
+            camTarget.z = forward.z + camPos.z;
+        }     
+
+        t3d_viewport_look_at(&viewport, &camPos, &camTarget, &(T3DVec3){{0,1,0}});
+
+        t3d_mat4_from_srt_euler(
+            &skyMat,
+            (float[3]){1, 1, 1},
+            (float[3]){0, 0, 0},
+            (float[3]){camPos.x, camPos.y, camPos.z});
+
+        t3d_mat4_from_srt_euler(
+            &modelMat,
+            (float[3]){0.1f, 0.1f, 0.1f},
+            (float[3]){0, 0, 0},
+            (float[3]){0, 0, 0});
+
+        t3d_mat4_to_fixed(modelMatFP, &modelMat);
+        t3d_mat4_to_fixed(skyMatFP, &skyMat);
+
+        
+        surface_t *display = 0;
+        display = display_get();
+        rdpq_attach(display, display_get_zbuf());
+        t3d_frame_start();
+        t3d_viewport_attach(&viewport);
+        t3d_screen_clear_color(RGBA32(40, 60, 70, 255));
+        t3d_screen_clear_depth();
+        t3d_light_set_ambient(colorAmb);
+        t3d_light_set_directional(0, colorSun, &lightDirVec);
+        t3d_light_set_count(1);
+
+        if(!dplDraw)
+        {
+            rspq_block_begin();
+            
+            rdpq_mode_zbuf(false, false);
+            t3d_matrix_push(skyMatFP);
+            t3d_model_draw(sky);
+            t3d_matrix_pop(1);
+            rdpq_mode_zbuf(true, true);
+            
+            t3d_matrix_push(modelMatFP);
+            t3d_model_draw(model);
+            t3d_matrix_pop(1);
+            
+            dplDraw = rspq_block_end();
+        }
+        rspq_block_run(dplDraw);

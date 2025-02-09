@@ -47,7 +47,7 @@ filesystem/%.t3dm: assets/%.glb
 	$(N64_BINDIR)/mkasset -c 2 -o filesystem $@
 
 CFLAGS += -I$(INCLUDE_DIR) -I$(N64_INST)/include
-CFLAGS += -O3
+#CFLAGS += -O3
 
 all: hey.z64
 .PHONY: all

@@ -14,11 +14,11 @@
 #define i64 int64_t
 #define u64 uint64_t
 
-#define Vec3Zero    {0, 0, 0}
-#define Vec3One     {1, 1, 1}
-#define Vec3UnitX   {1, 0, 0}
-#define Vec3UnitY   {0, 1, 0}
-#define Vec3UnitZ   {0, 0, 1}
+#define Vec3Zero    (T3DVec3){{0, 0, 0}}
+#define Vec3One     (T3DVec3){{1, 1, 1}}
+#define Vec3UnitX   (T3DVec3){{1, 0, 0}}
+#define Vec3UnitY   (T3DVec3){{0, 1, 0}}
+#define Vec3UnitZ   (T3DVec3){{0, 0, 1}}
 
 typedef union
 {
