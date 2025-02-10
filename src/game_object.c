@@ -8,7 +8,7 @@ GameObject* game_object_create(u32 id, T3DModel *model, u8 displayType)
     obj->isDirty = true;
     obj->position = Vec3Zero;
     obj->rotation = Vec3Zero;
-    obj->scale = Vec3One;
+    obj->scale = (T3DVec3){{0.1f, 0.1f, 0.1f}};
     obj->model = model;
     obj->matrix = malloc_uncached(sizeof(T3DMat4FP));
 

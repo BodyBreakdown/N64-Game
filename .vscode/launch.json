@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Debug N64 Game",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\build\\hey.elf",
+            "cwd": "${workspaceFolder}",
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb-multiarch.exe",
+            "miDebuggerServerAddress": "[::1]:9123",
+            "miDebuggerArgs": "-readnow",
+            "setupCommands": [
+                {
+                    "text": "handle SIGTRAP ignore",
+                    "description": "Ignore SIGTRAP signals",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build and Run Ares"
+
+        },
+    ]
+}

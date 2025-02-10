@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build N64 Game",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build and Run Ares",
+            "type": "shell",
+            "command": "ares",
+            "args": [
+                "hey.z64"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": [
+                "Build N64 Game"
+            ]
+        },
+        {
+            "label": "Debug",
+            "type": "shell",
+            "command": "sleep 1.5",
+            "group": "build",
+            "dependsOn": "Run Ares Emulator",
+        },
+    ]
+}

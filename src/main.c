@@ -92,8 +92,12 @@ int main(void)
         //case GAMEPLAY: GameDraw(); break;
         }
         syncPoint = rspq_syncpoint_new();
+        
+        #ifdef DEBUG
         t3d_debug_print_start();
-        //t3d_debug_print(0, 0, TextFormat("%.2f, %.2f, %.2f", lightDirVec.x, lightDirVec.y, lightDirVec.z));
+        t3d_debug_print(0, 0, TextFormat("%.2f, %.2f, %.2f", lightDirVec.x, lightDirVec.y, lightDirVec.z));
+        #endif
+        
         rdpq_detach_show();
     }
     t3d_destroy();
