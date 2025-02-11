@@ -65,7 +65,7 @@ int main(void)
             //case OPTIONS: OptionsUpdate(); break;
             //case GAMEPLAY: GameUpdate(); break;
         }
-        mainCam.position.y += deltaTime;
+        //mainCam.position.y += deltaTime;
         camera_update(&mainCam);
 
         lightDirVec.x += inputAxes.x * deltaTime * 3;
