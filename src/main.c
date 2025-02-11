@@ -1,11 +1,8 @@
 #include <stdio.h>
 #include "scenes.h"
 #include "colors.h"
-#include "input.h"
 
 
-joypad_inputs_t inputs = {0};
-Vec2 inputAxes = {0};
 GameState gameState = 0;
 
 int main(void)
@@ -17,7 +14,7 @@ int main(void)
     debug_init_usblog();
     dfs_init(DFS_DEFAULT_LOCATION);
     rdpq_init();
-    joypad_init();
+    //input_init();
     timer_init();
     rdpq_text_register_font(FONT_BUILTIN_DEBUG_MONO, rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO));
     t3d_debug_print_init();
@@ -39,10 +36,7 @@ int main(void)
     rdpq_text_register_font(2, font);
     
     init_timers(TICK_30_PER_SECOND);
-    float rotAngle = 0;
-    
-    inputs = joypad_get_inputs((joypad_port_t)0);
-    
+
     gameState = LOGOS;
     rspq_syncpoint_t syncPoint = 0;
     
@@ -51,12 +45,7 @@ int main(void)
     while(1) 
     {
         update_timers();
-        joypad_poll();
-        inputs = joypad_get_inputs((joypad_port_t)0);
-        inputAxes.x = abs(inputs.stick_x) > 5 ? i8_bit_clamp(inputs.stick_x, -75, 75) : 0;
-        inputAxes.y = abs(inputs.stick_y) > 5 ? i8_bit_clamp(inputs.stick_y, -75, 75) : 0;
-
-        inputAxes = vec2_normalize(inputAxes);
+        //input_update();
 
         switch(gameState)
         {
@@ -68,8 +57,6 @@ int main(void)
         //mainCam.position.y += deltaTime;
         camera_update(&mainCam);
 
-        lightDirVec.x += inputAxes.x * deltaTime * 3;
-        lightDirVec.y += inputAxes.y * deltaTime * 3;
         t3d_vec3_norm(&lightDirVec);
 
         rdpq_attach(display_get(), display_get_zbuf());
@@ -84,9 +71,9 @@ int main(void)
 
         switch (gameState)
         {
-        case LOGOS:
-            LogosDraw();
-            break;
+            case LOGOS:
+                LogosDraw();
+                break;
         //case TITLE: TitleDraw(); break;
         //case OPTIONS: OptionsDraw(); break;
         //case GAMEPLAY: GameDraw(); break;

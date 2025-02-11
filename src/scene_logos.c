@@ -1,5 +1,6 @@
 #include "scenes.h"
 
+
 static GameObject* logo;
 
 void LogosStart(void)
@@ -10,6 +11,7 @@ void LogosStart(void)
 
 void LogosUpdate(void)
 {
+    
     float angle = fm_fmodf(accumulator, 6.28319);
     float scale = ((fm_sinf(angle)/FM_PI)+1)/2;
     for (int i = 0; i < 3; i++)

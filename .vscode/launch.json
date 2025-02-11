@@ -12,13 +12,7 @@
             "miDebuggerPath": "gdb-multiarch.exe",
             "miDebuggerServerAddress": "[::1]:9123",
             "miDebuggerArgs": "-readnow",
-            "setupCommands": [
-                {
-                    "text": "handle SIGTRAP ignore",
-                    "description": "Ignore SIGTRAP signals",
-                    "ignoreFailures": true
-                }
-            ],
+
             "preLaunchTask": "Build and Run Ares"
 
         },
