@@ -8,7 +8,7 @@ include $(N64_INST)/include/t3d.mk
 
 assets_fnt = $(wildcard assets/fonts/*.fnt)
 assets_ttf = $(wildcard assets/fonts/*.ttf)
-assets_png = $(wildcard assets/textures/*.png)
+assets_png = $(wildcard assets/*.png)
 assets_txt = $(wildcard assets/*.txt)
 assets_glb = $(wildcard assets/*.glb)
 
@@ -21,7 +21,7 @@ assets_conv = $(addprefix filesystem/,$(notdir $(assets_png:%.png=%.sprite))) \
 MKSPRITE_FLAGS ?=
 MKFONT_FLAGS ?= --range 0-255 --monochrome
 
-filesystem/%.sprite: assets/textures/%.png
+filesystem/%.sprite: assets/%.png
 	@mkdir -p $(dir $@)
 	@echo "    [SPRITE] $@"
 	$(N64_MKSPRITE) $(MKSPRITE_FLAGS) -o filesystem "$<"

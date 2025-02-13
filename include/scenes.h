@@ -4,7 +4,7 @@
 #include "camera.h"
 #include "game_object.h"
 #include "game_time.h"
-//#include "input.h"
+#include "input.h"
 #include "text.h"
 #include <libdragon.h>
 #include <t3d/t3d.h>
@@ -23,25 +23,25 @@ typedef enum GameState
 extern GameState gameState;
 
 void LogosStart(void);
-void LogosUpdate(void);
+void LogosUpdate(InputState* input);
 void LogosDraw(void);
 void LogosUnload(void);
 int LogosEnd(void);
 
 void TitleStart(void);
-void TitleUpdate(void);
+void TitleUpdate(InputState* input);
 void TitleDraw(void);
 void TitleUnload(void);
 int TitleEnd(void);
 
 void OptionsStart(void);
-void OptionsUpdate(void);
+void OptionsUpdate(InputState* input);
 void OptionsDraw(void);
 void OptionsUnload(void);
 int OptionsEnd(void);
 
 void GameStart(void);
-void GameUpdate(void);
+void GameUpdate(InputState* input);
 void GameDraw(void);
 void GameUnload(void);
 int GameEnd(void);
