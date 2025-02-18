@@ -1,5 +1,6 @@
 #include "text.h"
 
+
 const char *TextFormat(const char *text, ...)
 {
 #ifndef MAX_TEXTFORMAT_BUFFERS
@@ -31,4 +32,17 @@ const char *TextFormat(const char *text, ...)
         index = 0;
 
     return currentBuffer;
+}
+
+const char* VecToString(const float* v, size_t components)
+{
+    switch (components)
+    {
+        case 2:
+            return TextFormat("%.2f, %.2f", v[0], v[1]);
+        case 3:
+            return TextFormat("%.2f, %.2f, %.2f", v[0], v[1], v[2]);
+        default:
+            return TextFormat("Invalid number of components: %i", components);
+    }
 }

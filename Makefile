@@ -6,17 +6,21 @@ BUILD_DIR=build
 include $(N64_INST)/include/n64.mk
 include $(N64_INST)/include/t3d.mk
 
+CFLAGS += -I$(INCLUDE_DIR) -I$(N64_INST)/include -O3
+
 assets_fnt = $(wildcard assets/fonts/*.fnt)
 assets_ttf = $(wildcard assets/fonts/*.ttf)
 assets_png = $(wildcard assets/*.png)
 assets_txt = $(wildcard assets/*.txt)
 assets_glb = $(wildcard assets/*.glb)
+assets_obj = $(wildcard assets/*.obj)
 
 assets_conv = $(addprefix filesystem/,$(notdir $(assets_png:%.png=%.sprite))) \
 			  $(addprefix filesystem/,$(notdir $(assets_ttf:%.ttf=%.font64))) \
 			  $(addprefix filesystem/,$(notdir $(assets_fnt:%.fnt=%.font64))) \
 			  $(addprefix filesystem/,$(notdir $(assets_txt:%.txt=%.txt))) \
-			  $(addprefix filesystem/,$(notdir $(assets_glb:%.glb=%.t3dm)))
+			  $(addprefix filesystem/,$(notdir $(assets_glb:%.glb=%.t3dm))) \
+			  $(addprefix filesystem/,$(notdir $(assets_obj:%.obj=%.coll)))
 
 MKSPRITE_FLAGS ?=
 MKFONT_FLAGS ?= --range 0-255 --monochrome
@@ -46,7 +50,11 @@ filesystem/%.t3dm: assets/%.glb
 	$(T3D_GLTF_TO_3D) "$<" $@
 	$(N64_BINDIR)/mkasset -c 2 -o filesystem $@
 
-CFLAGS += -I$(INCLUDE_DIR) -I$(N64_INST)/include -O3
+filesystem/%.coll: assets/%.obj
+	@mkdir -p $(dir $@)
+	@echo "    [OBJ2COL] $@"
+	$(N64_INST)/bin/obj2col "$<" "$@"
+	$(N64_BINDIR)/mkasset -c 2 -o filesystem $@
 
 all: hey.z64
 .PHONY: all

@@ -1,10 +1,12 @@
 #include "input.h"
 
-#define CURRENT_PAD input->gamepads[i]
-#define JOYSTICK_X input->gamepads[i].inputs.stick_x
-#define JOYSTICK_Y input->gamepads[i].inputs.stick_y
+InputState input;
 
-void input_init(InputState* input)
+#define CURRENT_PAD input.gamepads[i]
+#define JOYSTICK_X input.gamepads[i].inputs.stick_x
+#define JOYSTICK_Y input.gamepads[i].inputs.stick_y
+
+void input_init()
 {
     joypad_init();
     for (int i = 0; i < 4; i++)
@@ -17,18 +19,29 @@ void input_init(InputState* input)
     }
 }
 
-void input_update(InputState* input)
+void input_update()
 {
     joypad_poll();
+    s8 x;
+    s8 y;
     for (int i = 0; i < 4; i++)
     {
         if (joypad_is_connected(i))
         {
             CURRENT_PAD.isActive = true;
             CURRENT_PAD.inputs = joypad_get_inputs(i);
-            CURRENT_PAD.joystick.x = abs(JOYSTICK_X) > STICK_DEADZONE ? i8_bit_clamp(JOYSTICK_X, -STICK_MAX_RANGE, STICK_MAX_RANGE) : 0;
-            CURRENT_PAD.joystick.y = abs(JOYSTICK_Y) > STICK_DEADZONE ? i8_bit_clamp(JOYSTICK_Y, -STICK_MAX_RANGE, STICK_MAX_RANGE) : 0;
-            CURRENT_PAD.joystickNorm = vec2_normalize(CURRENT_PAD.joystick);
+            
+            //Clamp the joystick to a given range
+            x = s8_clamp(JOYSTICK_X, -STICK_MAX_RANGE, STICK_MAX_RANGE);
+            y = s8_clamp(JOYSTICK_Y, -STICK_MAX_RANGE, STICK_MAX_RANGE);
+
+            //Convert to floating point and zero out anything below the deadzone 
+            CURRENT_PAD.joystick.x = abs(x) > STICK_DEADZONE ? (float)x / STICK_MAX_RANGE_F : 0.0f;
+            CURRENT_PAD.joystick.y = abs(y) > STICK_DEADZONE ? (float)y / STICK_MAX_RANGE_F : 0.0f;
+            
+            //Circularize the range
+            CURRENT_PAD.joystick.x *= sqrtf(1.0f - (CURRENT_PAD.joystick.y * CURRENT_PAD.joystick.y / 2.0f));
+            CURRENT_PAD.joystick.y *= sqrtf(1.0f - (CURRENT_PAD.joystick.x * CURRENT_PAD.joystick.x / 2.0f));
         }
         else
         {

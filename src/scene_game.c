@@ -3,13 +3,16 @@
 
 static Tilemap3D tilemap;
 
-void TitleStart(void)
+void GameStart(void)
 {
 
 }
-void TitleUpdate(InputState* input)
+void GameUpdate(void)
 {
 }
-void TitleDraw(void);
-void TitleUnload(void);
-int TitleEnd(void);
+void GameDraw(void)
+{
+
+}
+void GameUnload(void);
+int GameEnd(void);

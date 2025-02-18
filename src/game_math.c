@@ -1,12 +1,8 @@
 #include "game_math.h"
 
-
-
-i8 i8_bit_clamp(i8 x, i8 min, i8 max)
+float wrap_angle(float angle)
 {
-    i8 belowMin = (x - min) >> 7;
-    i8 aboveMax = (max - x) >> 7;
-    return (aboveMax & max) | (~aboveMax & ((belowMin & min) | (~belowMin & x)));
+    float a = fm_fmodf(angle + FM_PI, FM_PI * 2);
+    if (a < 0) a += FM_PI * 2;
+    return a - FM_PI;
 }
-
-

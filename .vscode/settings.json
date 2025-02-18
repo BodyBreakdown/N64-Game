@@ -15,7 +15,12 @@
         "input.h": "c",
         "game_object.h": "c",
         "scenes.h": "c",
-        "camera.h": "c"
+        "camera.h": "c",
+        "cstdint": "c",
+        "display.h": "c",
+        "collision.h": "c",
+        "string.h": "c",
+        "stdlib.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

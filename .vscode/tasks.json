@@ -36,5 +36,6 @@
             "group": "build",
             "dependsOn": "Run Ares Emulator",
         },
+        
     ]
 }
